@@ -53,9 +53,6 @@
         <version>1.2.1</version>
         <configuration>
           <executable>${android.ndk.path}/ndk-build</executable>
-          <arguments>
-            <argument>APP_ABI=all</argument>
-          </arguments>
         </configuration>
         <executions>
           <execution>
