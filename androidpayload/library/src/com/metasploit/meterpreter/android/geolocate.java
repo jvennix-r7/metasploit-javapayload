@@ -70,7 +70,7 @@ public class geolocate implements Command {
         return ERROR_SUCCESS;
     }
 
-    private void addLocationToResponse(Location location, TLVPacket response) {
+    private void addLocationToResponse(Location location, TLVPacket response) throws Exception {
         response.add(TLV_TYPE_GEO_LAT,
                 Double.toString(location.getLatitude()));
         response.add(TLV_TYPE_GEO_LONG,

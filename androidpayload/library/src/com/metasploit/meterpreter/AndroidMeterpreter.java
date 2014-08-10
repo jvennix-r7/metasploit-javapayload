@@ -42,7 +42,7 @@ import com.metasploit.meterpreter.android.dump_contacts;
 import com.metasploit.meterpreter.android.dump_sms;
 import com.metasploit.meterpreter.android.geolocate;
 // import com.metasploit.meterpreter.android.set_volume;
-//import com.metasploit.meterpreter.android.speak;
+import com.metasploit.meterpreter.android.speak;
 // import com.metasploit.meterpreter.android.vibrate;
 
 // import com.metasploit.meterpreter.android.enum_apps;
@@ -107,7 +107,7 @@ public class AndroidMeterpreter extends Meterpreter {
 
         // mgr.registerCommand("enum_apps", enum_apps.class);
         // mgr.registerCommand("enum_activities", enum_activities.class);
-//        mgr.registerCommand("speak", speak.class);
+        mgr.registerCommand("speak", speak.class);
         // mgr.registerCommand("launch_intent", launch_intent.class);
         // mgr.registerCommand("check_permissions", launch_intent.class);
         // mgr.registerCommand("set_volume", launch_intent.class);
