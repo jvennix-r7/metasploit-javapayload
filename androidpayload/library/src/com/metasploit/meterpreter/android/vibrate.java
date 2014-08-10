@@ -4,7 +4,9 @@ import com.metasploit.meterpreter.Meterpreter;
 import com.metasploit.meterpreter.TLVPacket;
 import com.metasploit.meterpreter.command.Command;
 
+import com.metasploit.meterpreter.AndroidMeterpreter;
 import android.os.Vibrator;
+import android.content.Context;
 
 public class vibrate implements Command {
 
@@ -13,14 +15,10 @@ public class vibrate implements Command {
 
     @Override
     public int execute(Meterpreter meterpreter, TLVPacket request, TLVPacket response) throws Exception {
-        int duration = Float.parseFloat(request.getStringValue(TLV_TYPE_VIBRATE_DURATION));
-        Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+        float duration = Float.parseFloat(request.getStringValue(TLV_TYPE_VIBRATE_DURATION));
+        Vibrator v = (Vibrator)AndroidMeterpreter.getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
-        if (v.hasVibrator()) {       
-          v.vibrate(duration*1000);
-          return ERROR_SUCCESS;
-        } else {
-          return ERROR_FAILURE;
-        }
+        v.vibrate((int)Math.floor(duration*1000));
+        return ERROR_SUCCESS;
     }
 }

